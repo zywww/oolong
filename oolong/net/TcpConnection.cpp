@@ -25,6 +25,7 @@ TcpConnection::TcpConnection(EventLoop* loop, int sockfd, const EndPoint& local,
     localAddr_(local),
     peerAddr_(peer)
 {
+    socket_.setTcpNoDelay(true);
     channel_.setReadableCallback(std::bind(&TcpConnection::handleRead, this));
     channel_.setWritableCallback(std::bind(&TcpConnection::handleWrite, this));
     channel_.setCloseCallback(std::bind(&TcpConnection::handleClose, this));

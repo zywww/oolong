@@ -1,13 +1,15 @@
 #pragma once
 #include <vector>
+
 #include <oolong/base/Timestamp.h>
+#include <oolong/base/noncopyable.h>
 
 namespace oolong
 {
     class Channel;
     class EventLoop;
     
-    class Poller //:noncopyable
+    class Poller : noncopyable
     {
     public:
         Poller(EventLoop* loop) : ownerLoop_(loop)

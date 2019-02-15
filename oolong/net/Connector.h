@@ -8,7 +8,8 @@ namespace oolong
 {
     class Channel;
     class EventLoop;
-    class Connector : public std::enable_shared_from_this<Connector>
+    class Connector :   noncopyable,
+                        public std::enable_shared_from_this<Connector>
     {
     public:
         using NewConnectionCallback = std::function<void (int sockfd)>;

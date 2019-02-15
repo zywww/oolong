@@ -2,6 +2,7 @@
 #include <functional>
 
 #include <oolong/base/Timestamp.h>
+#include <oolong/base/noncopyable.h>
 
 namespace oolong
 {
@@ -12,7 +13,7 @@ namespace oolong
     // 这是因为fd的close和epoll退出分开管理导致的吧
 
     // 处理io事件,不管理fd,fd可能为socket,timerfd
-    class Channel //: noncopyable
+    class Channel : noncopyable
     {
     public:
         using EventCallback = std::function<void()>;

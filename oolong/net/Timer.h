@@ -9,9 +9,10 @@
 #include <cstdint>
 #include <functional>
 
+#include <oolong/base/noncopyable.h>
+#include <oolong/base/Timestamp.h>
 #include <oolong/net/Callbacks.h>
 #include <oolong/net/Channel.h>
-#include <oolong/base/Timestamp.h>
 
 namespace oolong
 {
@@ -49,7 +50,7 @@ namespace oolong
         }
     };
 
-    class Timer
+    class Timer : noncopyable
     {
     public:
         Timer(TimerCallback cb, Timestamp expiration, double interval) :
@@ -85,7 +86,7 @@ namespace oolong
     };
 
     class EventLoop;
-    class TimerQueue
+    class TimerQueue : noncopyable
     {
     public:
         TimerQueue(EventLoop* loop);

@@ -1,6 +1,7 @@
 #pragma once
 #include <functional>
 
+#include <oolong/base/noncopyable.h>
 #include <oolong/net/EndPoint.h>
 #include <oolong/net/Channel.h>
 #include <oolong/net/TcpSocket.h>
@@ -11,7 +12,7 @@ namespace oolong
 
     // 内部使用
     // 接受新链接
-    class Acceptor //: noncopyable
+    class Acceptor : noncopyable
     {
     public:
         using NewConnectionCallback = std::function<void(int sockfd, const EndPoint&)>;

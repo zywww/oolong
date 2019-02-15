@@ -3,6 +3,8 @@
 #include <cassert>
 #include <algorithm>
 
+#include <oolong/base/noncopyable.h>
+
 namespace oolong
 {
 ///     +------------------+------------------+
@@ -11,7 +13,7 @@ namespace oolong
 ///     +------------------+------------------+
 ///     |                  |                  |
 /// readerIndex   <=   writerIndex    <=     size
-    class Buffer
+    class Buffer : noncopyable
     {
         static const size_t kInitSize = 1024;
     public:

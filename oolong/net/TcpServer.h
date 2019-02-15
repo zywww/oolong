@@ -5,6 +5,7 @@
 #include <atomic>
 #include <unordered_set>
 
+#include <oolong/base/noncopyable.h>
 #include <oolong/net/Acceptor.h>
 #include <oolong/net/EndPoint.h>
 #include <oolong/net/Callbacks.h>
@@ -15,7 +16,7 @@ namespace oolong
     class TcpConnection;
     class Buffer;
 
-    class TcpServer //: noncopyable
+    class TcpServer : noncopyable
     {
     public:
         using ThreadInitCallback = std::function<void(EventLoop*)>;

@@ -1,6 +1,7 @@
 #pragma once
 #include <mutex>
 
+#include <oolong/base/noncopyable.h>
 #include <oolong/net/EndPoint.h>
 #include <oolong/net/Callbacks.h>
 
@@ -8,7 +9,7 @@ namespace oolong
 {
     class EventLoop;
     class Connector;
-    class TcpClient
+    class TcpClient : noncopyable
     {
     public:
         using ConnectorPtr = std::shared_ptr<Connector>;

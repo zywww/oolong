@@ -39,8 +39,8 @@ namespace oolong
 
         ~Logger()
         {
-            ss_ << " - " << fileInfo_ << " " << functionName_ << "()";
-            std::cout << ss_.str() << std::endl;
+            ss_ << " - " << fileInfo_ << " " << functionName_ << "()\n";
+            std::cout << ss_.str();
         }
 
         std::ostream& stream() { return ss_ << " - "; }

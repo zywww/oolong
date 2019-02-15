@@ -1,9 +1,10 @@
 #pragma once
+#include <oolong/base/noncopyable.h>
 #include <oolong/net/EndPoint.h>
 
 namespace oolong
 {
-    class TcpSocket //: noncopyable
+    class TcpSocket : noncopyable
     {
     public:
         explicit TcpSocket(int fd) :

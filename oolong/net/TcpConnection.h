@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 
+#include <oolong/base/noncopyable.h>
 #include <oolong/net/TcpSocket.h>
 #include <oolong/net/Channel.h>
 #include <oolong/net/EndPoint.h>
@@ -14,7 +15,8 @@ namespace oolong
     // 表示一条连接,一旦断连,本对象无用
     // 如果在有数据未写完时关链接,先发送数据再关闭
     // 在socket上的封装
-    class TcpConnection : public std::enable_shared_from_this<TcpConnection>
+    class TcpConnection : noncopyable,
+                          public std::enable_shared_from_this<TcpConnection>
     {
     public:
         TcpConnection(EventLoop* loop, int sockfd, const EndPoint& local, const EndPoint& peer);
