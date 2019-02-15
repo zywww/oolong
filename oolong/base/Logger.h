@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -41,6 +42,8 @@ namespace oolong
         {
             ss_ << " - " << fileInfo_ << " " << functionName_ << "()\n";
             std::cout << ss_.str();
+            if (level_ > LogLevel::Fatal)
+                abort();
         }
 
         std::ostream& stream() { return ss_ << " - "; }

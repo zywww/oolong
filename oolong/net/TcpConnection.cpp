@@ -2,6 +2,7 @@
 
 #include <oolong/base/Logger.h>
 #include <oolong/net/SocketAPI.h>
+#include <oolong/net/TcpSocket.h>
 #include <oolong/net/TcpConnection.h>
 #include <oolong/net/EventLoop.h>
 
@@ -20,12 +21,12 @@ namespace oolong
 
 TcpConnection::TcpConnection(EventLoop* loop, int sockfd, const EndPoint& local, const EndPoint& peer) :
     loop_(loop),
-    socket_(sockfd),
+    socket_(std::make_unique<TcpSocket>(sockfd)),
     channel_(loop, sockfd),
     localAddr_(local),
     peerAddr_(peer)
 {
-    socket_.setTcpNoDelay(true);
+    socket_->setTcpNoDelay(true);
     channel_.setReadableCallback(std::bind(&TcpConnection::handleRead, this));
     channel_.setWritableCallback(std::bind(&TcpConnection::handleWrite, this));
     channel_.setCloseCallback(std::bind(&TcpConnection::handleClose, this));
@@ -71,7 +72,7 @@ void TcpConnection::shutdownInLoop()
     loop_->assertInLoopThread();
     if (!channel_.isWriting())
     {
-        socket_.shutdownWrite();
+        socket_->shutdownWrite();
     }
 }
 

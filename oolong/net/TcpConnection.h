@@ -2,7 +2,6 @@
 #include <string>
 
 #include <oolong/base/noncopyable.h>
-#include <oolong/net/TcpSocket.h>
 #include <oolong/net/Channel.h>
 #include <oolong/net/EndPoint.h>
 #include <oolong/net/Callbacks.h>
@@ -11,6 +10,7 @@
 namespace oolong
 {
     class EventLoop;
+    class TcpSocket;
 
     // 表示一条连接,一旦断连,本对象无用
     // 如果在有数据未写完时关链接,先发送数据再关闭
@@ -59,7 +59,7 @@ namespace oolong
 
         State state_ = State::Connecting;
         EventLoop* loop_;
-        TcpSocket socket_;
+        std::unique_ptr<TcpSocket> socket_;
         Channel channel_;
         MessageCallback messageCallback_;
         ConnectionCallback connectionCallback_;
