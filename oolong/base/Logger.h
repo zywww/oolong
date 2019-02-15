@@ -26,6 +26,7 @@ namespace oolong
             fileInfo_(srcFile + ":" + std::to_string(line)),
             functionName_(functionName)
         {
+            // todo 是否自动log errno
             // todo 日志头差日期 pid 
             const char* levelName[LogLevel::EnumSize] = 
             {
@@ -40,11 +41,17 @@ namespace oolong
 
         ~Logger()
         {
-            ss_ << " - " << fileInfo_ << " " << functionName_ << "()\n";
-            std::cout << ss_.str();
+            if (level_ >= logLevel()) 
+            {
+                ss_ << " - " << fileInfo_ << " " << functionName_ << "()\n";
+                std::cout << ss_.str();
+            }
             if (level_ > LogLevel::Fatal)
                 abort();
         }
+
+        static LogLevel logLevel();
+        static void setLogLevel(LogLevel level);
 
         std::ostream& stream() { return ss_ << " - "; }
 
@@ -54,6 +61,11 @@ namespace oolong
         std::string functionName_;
         std::stringstream ss_;
     };
+    
+    extern Logger::LogLevel g_logLevel;
+    inline Logger::LogLevel Logger::logLevel() { return g_logLevel; }
+    inline void Logger::setLogLevel(Logger::LogLevel level) { g_logLevel = level; }
+
 } // namespace oolong
 
 #define LogDebug oolong::Logger(oolong::Logger::Debug, __FILE__, __LINE__, __FUNCTION__).stream()
