@@ -1,0 +1,5 @@
+add_executable(logger_test Logger_test.cpp)
+target_link_libraries(logger_test oolong_base)
+
+add_executable(timestamp_test Timestamp_test.cpp)
+target_link_libraries(timestamp_test oolong_base)

@@ -1,0 +1,82 @@
+一个多线程linux网络库
+特点:
+1.基于tcp
+2.one loop per thread
+
+TODO:
+以后单元测试改成用gtest写
+试试每个pollhup的变量
+内存泄露测试
+实现异步logger
+todo试试单个loop能支持多少链接,还有多个loop
+settcpnodelay
+
+问题:
+为什么currentThread不和thread放在一起
+我的库是什么时候安装的
+tests里面的passbyvalue passbyref的函数有什么用
+muduo 好像文件组织看不出来哪些是用户接口，是不是应该生成一个include文件夹
+对所有有析构函数的类都什么不可复制
+怎么区分用户接口和内部借口(一些public成员函数是内部使用)
+对于创建socket等接口失败的情况怎么处理
+继承 noncopyable 有什么用,其他项目用的多吗
+为什么pollrdhup的时候要处理读事件
+为什么muduo的connection类中的socket要用unique_ptr管理
+ipv4和ipv6的转化和处理
+既然每个线程只有一个loop为什么不弄成 一个getCurrentThreadLoop之类的接口?
+观察其他源代码,把部分实现放到源文件,如需要依赖别的库但代码量不大的代码需要放到源文件吗?
+什么时候用类型转换,比如muduo的EPollPoller.cpp:69就使用了类型转换,但其实可以不用为什么?
+为什么总是给标准容器起别名?而且只是一部分起,为什么不全部起?
+成员函数部分类可见(比如channel里的handleEvent是内部用的),不应该开放给用户,怎么处理这种情况?参看其他项目
+为什么不用引用代替部分指针如accept函数为什么用accept(Endpoint*)而不用引用,是因为应用传参时区分不出会修改传入参数吗?是不是输出参数都用指针比较合适呢?
+熟悉网络api头文件族
+看看其他库有没有处理self-connection,我们先不处理
+muduo接口需要记住的东西太多了,比如线程安全就不是一致的,因为它把部分内部借口public了
+是不是其他项目的logfatal也是log完直接退出的?
+为什么不给定时器设置一个周期如10ms,而是每次都重新设置下次定时器时间?
+
+class Bar;
+class Foo
+{
+public:
+	vector<Bar> vec;
+}; // 为什么这是ok的?
+
+
+为什么像muduo和fibjs的atomic实现都要自己用swapandcmp原语去实现而不用mutex去实现呢？mutex底层不也是用swapandcmp吗？(通过搜索atomic实现来找结果))
+可能对数字的原子操作是常用操作，所以抽象出来？但是抽不抽出来跟用sac实现还是mutex实现不是同个问题啊！
+atomic为什么用valite声明
+
+
+one loop per thread 的思想实现多线程 TcpServer 的关键步骤是在新建 TcpConnetion 时从 event loop pool
+里挑选一个 loop 给 TcpConnection 用。也就是说多线程 TcpServer 自己的 EventLoop 只用来接受新连接，而新连接
+会用其他 EventLoop 来执行 I/O
+
+体会:
+写程序的时候要自顶向下的写类结构,从接口层开始设计,才能确定实现层.
+
+一些类成员使用智能指针管理可能是与其他类共同拥有,因此用shared_ptr,
+而一些独享的使用unique_ptr可能因为该成员可能为空,用指针可以表示空成员
+
+一开始设计的时候就要确定暴露给用户的东西,我一开始以为muduo只暴露tcpserver和tcpclient,其实不是
+muduo把实现放在cpp文件内一方面是为了不把定义暴露给用户代码 
+muduo使用前向声明使得不需要include头文件,而减少了头文件的传递性.因为头文件的一点改动,
+都会使得include它的源文件重新编译.
+
+各个结构
+Channel 事件处理中的通道,向上更新事件,向下分发事件,跟epoll_event对应,
+	Channel的资源不由EventLoop,poller等管理,由使用者如timerqueue,
+	connection等管理
+Poller io多路复用处理器
+EventLoop 利用Poller做事件监听,事件处理,定时器等功能,其他功能如tcpserver,
+	tcpclient会通过它实现
+Socket 封装了对socket fd资源管理及操作
+Acceptor 通过EventLoop和一个监听channel来获取监听链接(has a Socket)
+TcpServer 通过Acceptor接受链接,并将链接分配到loop,管理Connection并注册三个半事件的回调
+TcpConnection 使用并管理Channel,Socket,Buffer来收发消息(因为客户端断开链接会导致链接对象析构,以及其他原因见 muduoP101,所以使用shared_ptr管理生命周期)
+Connector 管理Channel,发起链接的操作
+TcpClient 通过Connector来获得一个Connection
+TimerQueue 通过Channel管理timers
+
+面试可能问:
+边沿触发和水平触发
