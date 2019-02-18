@@ -24,5 +24,6 @@ namespace oolong
     using CloseCallback = std::function<void(const TcpConnectionPtr&)>;
 
     void defaultConnectionCallback(const TcpConnectionPtr& conn, bool up);
+    void defaultMessageCallback(const TcpConnectionPtr&, Buffer*);
 
 } // namespace oolong

@@ -36,7 +36,7 @@ namespace oolong
                 "Error",
                 "Fatal"
             };
-            ss_ << levelName[level];
+            ss_ << levelName[level] << " - ";
         }
 
         ~Logger()
@@ -53,7 +53,7 @@ namespace oolong
         static LogLevel logLevel();
         static void setLogLevel(LogLevel level);
 
-        std::ostream& stream() { return ss_ << " - "; }
+        std::stringstream& stream() { return ss_; }
 
     private:
         LogLevel level_;

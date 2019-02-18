@@ -30,3 +30,4 @@ message(STATUS "CXX_FLAGS = " ${CMAKE_CXX_FLAGS} " " ${CMAKE_CXX_FLAGS_${BUILD_T
 
 add_subdirectory(oolong/base)
 add_subdirectory(oolong/net)
+add_subdirectory(example)

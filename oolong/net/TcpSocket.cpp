@@ -41,7 +41,8 @@ void TcpSocket::setReuseAddr(bool on)
 
 void TcpSocket::setTcpNoDelay(bool on)
 {
-    int ret = ::setsockopt(fd_, IPPROTO_TCP, TCP_NODELAY, &on, static_cast<socklen_t>(sizeof on));
+    int optval = on;
+    int ret = ::setsockopt(fd_, IPPROTO_TCP, TCP_NODELAY, &optval, static_cast<socklen_t>(sizeof optval));
     if (ret < 0)
         LogError << "TcpSocket::setTcpNoDelay() errno: " << errno;
 }

@@ -6,7 +6,6 @@
 
 namespace oolong
 {
-    // todo 是不是内部都是用 in6 表示地址的?
     class EndPoint
     {
     public:
@@ -21,7 +20,6 @@ namespace oolong
         sa_family_t family() const { return addr_.sin_family; }
         void setSockAddrIn6(const struct sockaddr_in6 addr6) { addr6_ = addr6; }
 
-        // std::string toString();
         std::string toIp() const;
         std::string toIpPort() const;
 

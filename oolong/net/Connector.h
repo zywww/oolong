@@ -1,6 +1,7 @@
 #pragma once
 #include <functional>
 
+#include <oolong/base/noncopyable.h>
 #include <oolong/net/EndPoint.h>
 #include <memory>
 

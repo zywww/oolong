@@ -22,6 +22,10 @@ namespace oolong
         {
             data_ = new char[size_];
         }
+        ~Buffer()
+        {
+            delete[] data_;
+        }
 
         const char* peek() const
         {
@@ -96,11 +100,12 @@ namespace oolong
             {
                 // 把内容复制到新空间
                 size_t newSize = size_ * 2;
+                newSize = std::max(newSize, readableBytes() + len);
                 char* newData = new char[newSize];
                 std::copy(data_+readerIndex_, data_+writerIndex_, newData);
                 writerIndex_ = readableBytes();
                 readerIndex_ = 0;
-                delete data_;
+                delete[] data_;
                 data_ = newData;
                 size_ = newSize;
             }

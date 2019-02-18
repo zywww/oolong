@@ -15,6 +15,11 @@ namespace oolong
     {
         LogDebug << "connection " << (up?"up":"down");
     }    
+
+    void defaultMessageCallback(const TcpConnectionPtr& conn, Buffer* buffer)
+    {
+        buffer->retrieveAll();
+    }
 } // namespace oolong
 
 

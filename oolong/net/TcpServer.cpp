@@ -13,7 +13,9 @@ using namespace oolong;
 TcpServer::TcpServer(EventLoop* loop, const EndPoint& endpoint, bool reusePort) :
     loop_(loop),
     acceptor_(loop, endpoint, reusePort),
-    threadPool_(loop)
+    threadPool_(loop),
+    connectionCallback_(defaultConnectionCallback),
+    messageCallback_(defaultMessageCallback)
 {
     assert(loop);
     acceptor_.setNewConnectionCallback(std::bind(&TcpServer::newConnection, this, _1, _2));
