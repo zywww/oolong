@@ -5,10 +5,12 @@
 #include <mutex>
 #include <condition_variable>
 
+#include <oolong/base/noncopyable.h>
+
 namespace oolong
 {
     class EventLoop;
-    class EventLoopThread //:noncopyable
+    class EventLoopThread : noncopyable
     {
     public:
         using ThreadInitCallback = std::function<void(EventLoop*)>;

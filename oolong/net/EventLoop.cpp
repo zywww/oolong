@@ -61,7 +61,7 @@ void EventLoop::loop()
     looping_ = true;
     while (!quit_)
     {
-        std::vector<Channel*> activeChannels; // todo 试试作为成员会不会好点
+        std::vector<Channel*> activeChannels;
         static const int kPollTimeMs = 10000;
         Timestamp pollReturnTime = poller_->poll(kPollTimeMs, activeChannels);
         for (Channel* channel : activeChannels)

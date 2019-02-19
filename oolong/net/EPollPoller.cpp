@@ -39,8 +39,6 @@ Timestamp EPollPoller::poll(int timeoutMs, std::vector<Channel*>& channels)
     if (numEvents > 0)
     {
         LogDebug << numEvents << " events happened";
-        // todo 增加debug宏
-        // 打印所有channel
         for (int i = 0; i < numEvents; ++i)
         {
             Channel* channel = static_cast<Channel*>(events_[i].data.ptr);

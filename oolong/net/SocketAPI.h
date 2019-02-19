@@ -10,7 +10,7 @@ namespace oolong
         struct sockaddr_in6 getLocalAddr(int sockfd); // 获取socket本端地址
         struct sockaddr_in6 getPeerAddr(int sockfd); // 获取socket对端地址
         void close(int sockfd); // 关闭socket fd
-        void listenOrDie(int sockfd); // 失败就挂掉 // todo这样合适吗?参考别的程序
+        void listenOrDie(int sockfd); // 失败就挂掉
         void bindOrDie(int sockfd, const struct sockaddr* addr);
         int accept(int sockfd, struct sockaddr_in6* addr);
         ssize_t write(int fd, const char* data, size_t len);

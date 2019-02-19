@@ -43,7 +43,7 @@ namespace oolong
         EndPoint peer_;
         bool connect_ = false; // 表示是否要链接
         State state_ = State::Disconnected;
-        std::unique_ptr<Channel> channel_; // connect时用的,若channel可读则链接成功, 这里的channel不管理fd资源
+        std::unique_ptr<Channel> channel_; // connect时用的,若channel可读则链接成功
         NewConnectionCallback newConnectionCallback_;
         int retryDelayMs_ = kInitRetryDelayMs;
     };

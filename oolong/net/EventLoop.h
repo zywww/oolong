@@ -8,6 +8,7 @@
 #include <cassert>
 
 #include <oolong/base/Timestamp.h>
+#include <oolong/base/noncopyable.h>
 #include <oolong/net/Poller.h>
 #include <oolong/net/Callbacks.h>
 #include <oolong/net/Timer.h>
@@ -16,7 +17,7 @@ namespace oolong
 {
     class Channel;
 
-    class EventLoop //: noncopyable
+    class EventLoop : noncopyable
     {
     public:
         using TaskCallback = std::function<void()>;

@@ -8,11 +8,8 @@ namespace oolong
 {
     class EventLoop;
 
-    // todo muduo中由于channel不管理fd资源,所以channel管理fd在epoll的加入退出,而其他结构管理fd资源,
-    // 这样使得每次都得手动让channel从epoll退出,这样不优雅
-    // 这是因为fd的close和epoll退出分开管理导致的吧
-
-    // 处理io事件,不管理fd,fd可能为socket,timerfd
+    // 可把fd资源交由chnnel管理
+    // 处理io事件,fd可能为socket,timerfd
     class Channel : noncopyable
     {
     public:
