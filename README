@@ -1,10 +1,11 @@
 一个用于Linux多线程服务器的c++非阻塞网络库
 
-提供:
 
-安装:
+依赖:
+不依赖其他库
 
 使用:
+./build
 
 TODO:
 更高效的logger
@@ -13,4 +14,4 @@ TODO:
 muduo
 
 性能测试:
-example\
+见 example\pingpong
