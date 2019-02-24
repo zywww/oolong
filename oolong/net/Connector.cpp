@@ -82,7 +82,7 @@ void Connector::connecting(int sockfd)
 {
     LogDebug << "Connector::connecting";
     setState(State::Connecting);
-    channel_ = std::make_unique<Channel>(loop_, sockfd, false);
+    channel_ = std::make_unique<Channel>(loop_, sockfd, false); // 这里的channel不管理fd资源
     channel_->setWritableCallback(std::bind(&Connector::handleWrite, this));
     channel_->setErrorCallback(std::bind(&Connector::handleError, this));
     channel_->enableWriting();

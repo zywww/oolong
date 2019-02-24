@@ -27,7 +27,6 @@ namespace oolong
         void setMessageCallback(MessageCallback cb) { messageCallback_ = std::move(cb); }
         void setWriteCompleteCallback(WriteCompleteCallback cb) { writeCompleteCallback_ = std::move(cb); }
 
-
     private:
         void newConnection(int sockfd);
         void removeConnectionByPeer(const TcpConnectionPtr& conn);

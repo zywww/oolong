@@ -8,7 +8,7 @@ namespace oolong
 {
     class EventLoop;
 
-    // 可把fd资源交由chnnel管理
+    // 可选择性的把fd资源交由chnnel管理
     // 处理io事件,fd可能为socket,timerfd
     class Channel : noncopyable
     {
@@ -25,6 +25,7 @@ namespace oolong
         void setCloseCallback(EventCallback cb) { closeCallback_ = std::move(cb);}
         void setErrorCallback(EventCallback cb) { errorCallback_ = std::move(cb);}
 
+        // 必须在loopthread调用s
         void enableReading() { events_ |= kReadEvent; update(); }
         void disableReading() { events_ &= ~kReadEvent; update(); }
         void enableWriting() { events_ |= kWriteEvent; update(); }

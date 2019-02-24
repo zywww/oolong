@@ -21,7 +21,7 @@ ssize_t Buffer::readFd(int fd)
     const ssize_t n = SocketAPI::readv(fd, vec, iovcnt);
     if (n < 0)
     {
-
+        // todo
     }
     else if (static_cast<size_t>(n) <= writable)
         writerIndex_ += n;

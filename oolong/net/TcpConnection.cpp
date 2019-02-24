@@ -166,8 +166,7 @@ void TcpConnection::connectionEstablished()
     assert(state_ == State::Connecting);
     setState(State::Connected);
     channel_.enableReading();
-    if (connectionCallback_)
-        connectionCallback_(shared_from_this(), true);
+    connectionCallback_(shared_from_this(), true);
 }
 
 void TcpConnection::connectionDestroyed()
