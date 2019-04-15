@@ -3,3 +3,6 @@ target_link_libraries(chat_client oolong_net)
 
 add_executable(chat_server server.cpp)
 target_link_libraries(chat_server oolong_net)
+
+add_executable(chat_server_multi_thread server_multi_thread.cpp)
+target_link_libraries(chat_server_multi_thread oolong_net)
