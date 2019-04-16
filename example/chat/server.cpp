@@ -14,11 +14,10 @@ class ChatServer
 {
 public:
     ChatServer(EventLoop* loop, const EndPoint& serverAddr) :
-        server_(loop, serverAddr, true),
-        codec_(std::bind(&ChatServer::onMessage, this, _1, _2))
+        server_(loop, serverAddr, true)
     {
         server_.setConnectionCallback(std::bind(&ChatServer::onConnection, this, _1, _2));
-        server_.setMessageCallback(std::bind(&Codec::onMessage, &codec_, _1, _2));
+        server_.setMessageCallback(std::bind(&ChatServer::onMessage, this, _1, _2));
     }
 
     void start()
@@ -40,13 +39,17 @@ private:
         }
     }
 
-    void onMessage(const TcpConnectionPtr& msgConn, const std::string& msg)
+    void onMessage(const TcpConnectionPtr& msgConn, Buffer* buf)
     {
-        for (const TcpConnectionPtr& conn : conns_)
+        std::string msg;
+        while (codec_.decodeMessage(buf, msg))
         {
-            if (conn != msgConn)
+            for (const TcpConnectionPtr& conn : conns_)
             {
-                conn->send(codec_.encodeMessage(msg));
+                if (conn != msgConn)
+                {
+                    conn->send(codec_.encodeMessage(msg));
+                }
             }
         }
     }

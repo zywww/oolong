@@ -20,10 +20,9 @@ class ChatClient
 public:
     ChatClient(EventLoop* loop, const EndPoint& serverAddr) 
         : loop_(loop),
-          codec_(std::bind(&ChatClient::onMessage, this, _1, _2)),
           client_(loop, serverAddr)
         {
-            client_.setMessageCallback(std::bind(&Codec::onMessage, &codec_, _1, _2));
+            client_.setMessageCallback(std::bind(&ChatClient::onMessage, this, _1, _2));
             client_.setConnectionCallback(std::bind(&ChatClient::onConnection, this, _1, _2));
         }
 
@@ -63,9 +62,13 @@ private:
         }
     }
 
-    void onMessage(const TcpConnectionPtr& conn, const std::string& msg)
+    void onMessage(const TcpConnectionPtr& conn, Buffer* buf)
     {
-        cout << ">>" << msg << endl;
+        std::string msg;
+        while (codec_.decodeMessage(buf, msg))
+        {
+            cout << ">>" << msg << endl;
+        }
     }
 
     EventLoop* loop_;

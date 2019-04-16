@@ -24,27 +24,28 @@ struct Message
 class Codec
 {
 public:
-    using StringMessageCallback = std::function<void(const oolong::TcpConnectionPtr&, const std::string&)>;
+    //using StringMessageCallback = std::function<void(const oolong::TcpConnectionPtr&, const std::string&)>;
 
-    Codec(StringMessageCallback cb) :
-        messageCallback_(cb)
-    {
-    }
-
+    // Codec(StringMessageCallback cb)
+    // {
+    // }
+    
     // for callback
-    void onMessage(const oolong::TcpConnectionPtr& conn, oolong::Buffer* buf)
-    {
-        while (buf->readableBytes() >= kHeaderLength)
-        {
-            std::string msg;
-            if (!decodeMessage(buf, msg))
-                break;
-            messageCallback_(conn, msg);
-        }
-    }
+    // void onMessage(const oolong::TcpConnectionPtr& conn, oolong::Buffer* buf)
+    // {
+    //     while (buf->readableBytes() >= kHeaderLength)
+    //     {
+    //         std::string msg;
+    //         if (!decodeMessage(buf, msg))
+    //             break;
+    //         messageCallback_(conn, msg);
+    //     }
+    // }
 
     bool decodeMessage(oolong::Buffer* buf, std::string& msg)
     {
+        if (buf->readableBytes() < kHeaderLength)
+            return false;
         uint16_t len = buf->peekUint16();
         if (buf->readableBytes() < len)
             return false;
@@ -64,5 +65,5 @@ public:
 private:
     static const int kHeaderLength = 2; // = sizeof(Header);
 
-    StringMessageCallback messageCallback_;
+    // StringMessageCallback messageCallback_;
 };
