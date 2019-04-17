@@ -160,9 +160,8 @@ void EventLoop::doTask()
     {
     std::lock_guard<std::mutex> lock(mutex_);
     tasks.swap(tasks_);
-    // LogDebug << "tasksize: " << tasks.size() << " task_size: " << tasks_.size();
     }
-
+    
     for (const auto& task : tasks)
         task();
 

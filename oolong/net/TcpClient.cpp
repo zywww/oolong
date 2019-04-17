@@ -15,12 +15,10 @@ TcpClient::TcpClient(EventLoop* loop, const EndPoint& peer) :
     connectionCallback_(defaultConnectionCallback)
 {
     connector_->setNewConnectionCallback(std::bind(&TcpClient::newConnection, this, _1));
-    LogDebug << "TcpClient::TcpClient()";
 }
 
 TcpClient::~TcpClient()
 {
-    LogDebug << "TcpClient::~TcpClient()";
     TcpConnectionPtr conn;
     bool unique;
     {

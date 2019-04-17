@@ -7,7 +7,6 @@ using namespace oolong;
 EventLoopThreadPool::EventLoopThreadPool(EventLoop* baseLoop) :
     baseLoop_(baseLoop)
 {
-    
 }
 
 EventLoopThreadPool::~EventLoopThreadPool()

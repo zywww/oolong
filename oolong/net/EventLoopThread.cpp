@@ -36,7 +36,6 @@ void EventLoopThread::threadFunc()
     // LogDebug << "pid: " << getpid() << ", tid: " << ::syscall(SYS_gettid);
     if (threadInitCallback_)
         threadInitCallback_(&loop);
-
     {
         std::lock_guard<std::mutex> lock(mutex_);
         loop_ = &loop;
