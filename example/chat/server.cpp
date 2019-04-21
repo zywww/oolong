@@ -31,6 +31,7 @@ private:
         {
             conns_.insert(conn);
             LogInfo << "new client connect";
+            //LogInfo << "conns_.size()=" << conns_.size();
         }
         else 
         {
@@ -46,10 +47,7 @@ private:
         {
             for (const TcpConnectionPtr& conn : conns_)
             {
-                if (conn != msgConn)
-                {
-                    conn->send(codec_.encodeMessage(msg));
-                }
+                conn->send(codec_.encodeMessage(msg));
             }
         }
     }

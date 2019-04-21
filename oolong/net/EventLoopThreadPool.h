@@ -16,6 +16,7 @@ namespace oolong
         EventLoopThreadPool(EventLoop* baseLoop);
         ~EventLoopThreadPool();
 
+        // 设置额外的线程数
         void setThreadNum(size_t num) { numThreads_ = num; }
         void start(const ThreadInitCallback& cb = ThreadInitCallback());
 

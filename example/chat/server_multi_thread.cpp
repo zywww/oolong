@@ -21,16 +21,15 @@ public:
         server_.setMessageCallback(std::bind(&ChatServer::onMessage, this, _1, _2));
     }
 
-    void start()
-    {
-        server_.start();
-    }
-
     void setThreadNum(int num)
     {
         server_.setThreadNum(num);
     }
 
+    void start()
+    {
+        server_.start();
+    }
 private:
     void onConnection(const TcpConnectionPtr& conn, bool up)
     {
@@ -39,6 +38,7 @@ private:
         {
             conns_.insert(conn);
             LogInfo << "new client connect";
+            //LogInfo << "conns_.size()=" << conns_.size();
         }
         else 
         {
@@ -55,10 +55,7 @@ private:
             std::lock_guard<std::mutex> lock(mutex_);
             for (const TcpConnectionPtr& conn : conns_)
             {
-                if (conn != msgConn)
-                {
-                    conn->send(codec_.encodeMessage(msg));
-                }
+                conn->send(codec_.encodeMessage(msg));
             }
         }
     }
@@ -71,22 +68,19 @@ private:
 
 int main(int argc, char* argv[])
 {
-    if (argc >= 2)
+    if (argc >= 3)
     {
         uint16_t port = std::stoi(argv[1]);
+        int threads = std::stoi(argv[2]);
         EndPoint serverAddr(port);
         EventLoop loop;
         ChatServer server(&loop, serverAddr);
-        if (argc >= 3)
-        {
-            int threadNum = std::stoi(argv[2]);
-            server.setThreadNum(threadNum);
-        }
+        server.setThreadNum(threads);
         server.start();
         loop.loop();
     }
     else 
-        LogInfo << "usage: a.out port [thread_num]";
+        LogInfo << "usage: a.out port threads";
 
     return 0;
 }

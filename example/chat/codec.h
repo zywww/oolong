@@ -6,10 +6,7 @@
 
 struct Header //pack 1
 {
-    uint16_t len_total;
-    uint16_t len_name;
-    std::string name;
-    uint8_t op;
+    uint32_t len;
 };
 
 struct Message
@@ -18,52 +15,33 @@ struct Message
     std::string message;
 };
 
-// 2byte len
-// other byte content 
 
 class Codec
 {
 public:
-    //using StringMessageCallback = std::function<void(const oolong::TcpConnectionPtr&, const std::string&)>;
-
-    // Codec(StringMessageCallback cb)
-    // {
-    // }
-    
-    // for callback
-    // void onMessage(const oolong::TcpConnectionPtr& conn, oolong::Buffer* buf)
-    // {
-    //     while (buf->readableBytes() >= kHeaderLength)
-    //     {
-    //         std::string msg;
-    //         if (!decodeMessage(buf, msg))
-    //             break;
-    //         messageCallback_(conn, msg);
-    //     }
-    // }
-
-    bool decodeMessage(oolong::Buffer* buf, std::string& msg)
+    static bool decodeMessage(oolong::Buffer* buf, std::string& msg)
     {
         if (buf->readableBytes() < kHeaderLength)
             return false;
-        uint16_t len = buf->peekUint16();
-        if (buf->readableBytes() < len)
+        uint32_t len = buf->peekUint32();
+        if (buf->readableBytes() < len + kHeaderLength)
             return false;
-        msg = std::string(buf->peek()+kHeaderLength, len-kHeaderLength);
-        buf->retrieve(len);
+        msg = std::string(buf->peek()+kHeaderLength, len);
+        buf->retrieve(len+kHeaderLength);
         return true;
     }
 
-    std::string encodeMessage(const std::string& msg)
+    static std::string encodeMessage(const std::string& msg)
     {
-        uint16_t len = kHeaderLength + msg.length(); // todo 检查是否大于16位
+        uint32_t len = msg.length();
         oolong::Buffer buf;
-        buf.appendUint16(len);
-        return buf.retrieveAllAsString() + msg;
+        buf.appendUint32(len);
+        buf.append(msg.data(), msg.length());
+        return buf.retrieveAllAsString();
     }
 
 private:
-    static const int kHeaderLength = 2; // = sizeof(Header);
+    static const int kHeaderLength = 4; // = sizeof(Header);
 
     // StringMessageCallback messageCallback_;
 };
