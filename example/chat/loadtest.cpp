@@ -76,7 +76,6 @@ public:
 
     void start()
     {
-        // client_.enableRetry();
         client_.connect();
     }
 
@@ -90,7 +89,6 @@ public:
 private:
     void onConnection(const TcpConnectionPtr& conn, bool up)
     {
-        // todo 这个是在另外线程调用吧
         if (up)
         {
             stat_->incConnected();
@@ -99,8 +97,6 @@ private:
                 LogInfo << "all " << stat_->getConnected() << " clients connected";
                 loop_->runAfter(10, std::bind(&Session::send, this, conn, "hello"));
             }
-            // if (conn->send(codec_.encodeMessage("xx")) == false) 
-            //     LogInfo << "send false";
         }
         else 
             LogInfo << "disconnected";
