@@ -132,7 +132,7 @@ public:
         {
             auto up = std::make_unique<Session>(pool_.getNextLoop(), &stat_, serverAddr);
             up->start();
-            usleep(200); // todo 不加不行,不加会导致客户端和服务端连接数不一致
+            usleep(200);
             sessions_.emplace_back(std::move(up));
         }
     }
@@ -144,6 +144,8 @@ private:
     Stat stat_;
 };
 
+
+// fixme:不加usleep会出现服务端和客户端连接数不一致
 int main(int argc, char* argv[])
 {
     if (argc >= 3)
