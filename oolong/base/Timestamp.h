@@ -18,6 +18,12 @@ namespace oolong
 
             static Timestamp invalidTime() { return Timestamp(); };
             static Timestamp now();
+            static double timeDifference(Timestamp high, Timestamp low)
+            {
+                // high - low
+                int64_t diff = high.microSecondsSinceEpoch() - low.microSecondsSinceEpoch();
+                return static_cast<double>(diff) / Timestamp::kMicroSecondsPerSecond;
+            }
 
             int64_t microSecondsSinceEpoch() const { return microSecondsSinceEpoch_; }
             bool valid() const { return microSecondsSinceEpoch_ > 0; }
