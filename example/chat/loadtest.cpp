@@ -38,8 +38,6 @@ public:
         printf("%6d%% %.6f\n", 100, seconds.back());
     }
 
-    //void incSended() { ++sended_; }
-    //int getSended() const { return sended_; }
     int getSession() const { return session_; }
     int incConnected() { ++connected_; }
     int getConnected() const { return connected_; }
@@ -55,7 +53,6 @@ public:
 
 private:
     const int session_;
-    //atomic<int> sended_{0};
     atomic<int> connected_{0};
     Timestamp startTime_;
     std::mutex mutex_;
